@@ -382,18 +382,18 @@
             safeContainer.innerHTML = '';
 
             // Show safe message if no breaches
-            if (data.totalBreaches === 0) {
+            if (data.emailExposure.totalBreaches === 0) {
                 safeContainer.innerHTML = '<div class="safe-message">✓ Your email has not been found in any known data breaches!</div>';
                 results.classList.add('show');
                 return;
             }
 
             // Risk level card
-            const riskClass = data.riskLevel.toLowerCase();
+           const riskClass = data.emailExposure.riskLevel.toLowerCase();
             riskSummary.innerHTML += `
                 <div class="risk-card ${riskClass}">
                     <h3>Risk Level</h3>
-                    <div class="risk-value">${data.riskLevel}</div>
+                    <div class="risk-value">${data.emailExposure.riskLevel}</div>
                 </div>
             `;
 
@@ -401,14 +401,14 @@
             riskSummary.innerHTML += `
                 <div class="risk-card">
                     <h3>Total Breaches</h3>
-                    <div class="risk-value">${data.totalBreaches}</div>
+                    <div class="risk-value">${data.emailExposure.totalBreaches}</div>
                 </div>
             `;
 
             // Breaches list
-            if (data.breaches && data.breaches.length > 0) {
+            if  (data.emailExposure.sources && data.emailExposure.sources.length > 0) {
                 breachesSection.innerHTML = '<h3 class="section-title">📋 Data Breaches Found</h3>';
-                data.breaches.forEach(breach => {
+                data.emailExposure.sources.forEach(breach =>  {
                     const date = breach.date ? new Date(breach.date).toLocaleDateString() : 'Unknown Date';
                     breachesSection.innerHTML += `
                         <div class="breach-item">
@@ -420,10 +420,10 @@
             }
 
             // Leaked fields
-            if (data.leakedFields && data.leakedFields.length > 0) {
+            if (data.emailExposure.leakedFields && data.emailExposure.leakedFields.length > 0) {
                 leakedFieldsContainer.innerHTML = '<h3 class="section-title">⚠️ Leaked Information Types</h3>';
                 const sensitiveFields = ['password', 'phone', 'ip', 'credit_card'];
-                data.leakedFields.forEach(field => {
+                data.emailExposure.leakedFields.forEach(field =>  {
                     const isSensitive = sensitiveFields.includes(field.toLowerCase());
                     const className = isSensitive ? 'sensitive' : '';
                     leakedFieldsContainer.innerHTML += `<span class="field-badge ${className}">${field}</span>`;
